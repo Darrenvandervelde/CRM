@@ -1,9 +1,9 @@
 # CRM
 # Contacts Management
 
-Add, edit, and delete contacts
+* Add, edit, and delete contacts
 
-View full contact details in a right-hand preview panel
+* View full contact details in a right-hand preview panel
 
 Upload and attach files (PDFs, images, links)
 
