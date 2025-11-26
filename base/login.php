@@ -1,57 +1,50 @@
 <?php
 session_start();
+require "../base/system/db/db.php"; // Ensure this creates $pdo (PDO)
 
-// Include database connection
-require "../system/db/db.php"; // Make sure this returns $pdo (PDO connection)
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-if (isset($_POST['submit'])) {
+    // Get input
+    $username = trim($_POST['username'] ?? '');
+    $password = trim($_POST['password'] ?? '');
 
-    // Get form values safely
-    $username = trim($_POST['username']);
-    $password = trim($_POST['password']);
-
-    // Validate empty fields
-    if (empty($username) || empty($password)) {
-        echo "Please enter username and password";
+    // Validate
+    if ($username === '' || $password === '') {
+        header("Location: login.php?error=" . urlencode("Please enter username and password."));
         exit();
     }
 
-    // Fetch user from DB
+    // Fetch user
     $stmt = $pdo->prepare("SELECT id, username, password, role FROM users WHERE username = ?");
     $stmt->execute([$username]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Check user exists
-    if (!$user) {
-        echo "Invalid username or password";
+    if (!$user || !password_verify($password, $user['password'])) {
+        header("Location: login.php?error=" . urlencode("Invalid username or password."));
         exit();
     }
 
-    // Verify password
-    if (!password_verify($password, $user['password'])) {
-        echo "Invalid username or password";
-        exit();
-    }
-
-    // Store session data
-    $_SESSION['user_id'] = $user['id'];
-    $_SESSION['role']    = $user['role'];
+    // Save session
+    $_SESSION['user_id']  = $user['id'];
     $_SESSION['username'] = $user['username'];
+    $_SESSION['role']     = $user['role'];
 
     // Redirect based on role
-    if ($user['role'] == "admin") {
-        header("Location: ../admin/index.php");
-        exit();
-    } elseif ($user['role'] == "client") {
-        header("Location: ../client/index.php");
-        exit();
-    } elseif ($user['role'] == "dev") {
-        header("Location: ../dev/index.php");
-        exit();
-    } else {
-        echo "Unknown role!";
-        exit();
+    switch ($user['role']) {
+        case "admin":
+            header("Location: ../admin/index.php");
+            break;
+        case "client":
+            header("Location: ../client/index.php");
+            break;
+        case "dev":
+            header("Location: ../dev/index.php");
+            break;
+        default:
+            header("Location: login.php?error=" . urlencode("Unknown role."));
+            break;
     }
+    exit();
 }
 ?>
 <!DOCTYPE html>
@@ -62,94 +55,130 @@ if (isset($_POST['submit'])) {
     <title>Login</title>
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
 
-        .login-container {
-            background: #fff;
-            padding: 30px;
-            width: 350px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-        }
+/* FULL PAGE BACKGROUND */
+body {
+    height: 100vh;
+    background: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
 
-        h2 {
-            text-align: center;
-            margin-bottom: 25px;
-        }
+/* FULL PAGE BACKGROUND LINES */
+.triangle-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+        repeating-linear-gradient(20deg, rgba(255,255,255,0.1) 0px, rgba(253,253,253,0.1) 2px, transparent 2px, transparent 100px),
+        repeating-linear-gradient(40deg, rgba(255,255,255,0.1) 0px, rgba(161,161,161,0.1) 2px, transparent 2px, transparent 100px),
+        repeating-linear-gradient(60deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 2px, transparent 2px, transparent 100px),
+        repeating-linear-gradient(80deg, rgba(255,255,255,0.05) 0px, rgba(161,161,161,0.05) 2px, transparent 2px, transparent 100px),
+        repeating-linear-gradient(100deg, rgba(255,255,255,0.05) 0px, rgba(161,161,161,0.05) 2px, transparent 2px, transparent 100px),
+        repeating-linear-gradient(120deg, rgba(252,252,252,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 100px),
+        repeating-linear-gradient(140deg, rgba(252,252,252,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 100px),
+        repeating-linear-gradient(160deg, rgba(252,252,252,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 100px),
+        repeating-linear-gradient(180deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 100px),
+        repeating-linear-gradient(200deg, rgba(252,252,252,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 100px);
+    backdrop-filter: blur(2px);
+    opacity: 0.8;
+    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.1);
+}
 
-        input[type="text"],
-        input[type="password"] {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0 15px 0;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
-        }
+/* LOGIN CONTAINER */
+.login-wrapper {
+    width: 400px;
+    height: 100px;
+    padding: 40px;
+    background: rgba(255,255,255,0.85);
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(158,158,158,0.2);
+    backdrop-filter: blur(8px);
+    position: relative;
+    transition: all 0.3s ease-in-out;
+}
 
-        button {
-            width: 100%;
-            background: #007bff;
-            color: white;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 17px;
-        }
+/* Expand on hover */
+.login-wrapper:hover {
+    width: 400px;
+    height: 600px;
+    box-shadow: 0 12px 40px rgba(255,255,255,0.05);
+}
 
-        button:hover {
-            background: #0056b3;
-        }
+/* Decorative soft glow behind */
+.login-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: -20px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.08);
+    filter: blur(30px);
+    z-index: -1;
+}
+.login-wrapper h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
 
-        .error {
-            color: red;
-            text-align: center;
-            margin-bottom: 10px;
-        }
+.login-title {
+    text-align: center;
+    font-size: 46px;
+    font-family: "Orbitron", sans-serif;
+    font-weight: 700;
+    position: relative;
+    transition: all 0.3s ease;
+}
 
-        .footer {
-            margin-top: 15px;
-            text-align: center;
-            font-size: 14px;
-        }
+/* Pseudo-element shows hover text */
+.login-title::after {
+    content: attr(data-hover);
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* On hover, hide original text, show new text */
+.login-wrapper:hover .login-title {
+    color: transparent; /* hides original text */
+}
+
+.login-wrapper:hover .login-title::after {
+    opacity: 1;
+    color: #4A6CF7;
+}
     </style>
+    </head>
 
-</head>
-<body>
+    <body>
+        <div id="triangle-bg" class="triangle-bg"></div>
 
-<div class="login-container">
-    <h2>Login</h2>
+    <div class="login-wrapper">
+        <h1 class="login-title" data-hover="Welcome Back!">Login</h1>
 
-    <!-- Display errors if needed -->
-    <?php if (isset($_GET['error'])): ?>
-        <div class="error"><?= htmlspecialchars($_GET['error']); ?></div>
-    <?php endif; ?>
+        <form action="" method="POST">
+            <label>Username</label>
+            <input type="text" name="username" required>
 
-    <form action="login_process.php" method="POST">
-        <label>Username</label>
-        <input type="text" name="username" required>
+            <label>Password</label>
+            <input type="password" name="password" required>
 
-        <label>Password</label>
-        <input type="password" name="password" required>
-
-        <button type="submit" name="submit">Login</button>
-    </form>
-
-    <div class="footer">
-        © <?= date('Y'); ?> Your System
+            <button type="submit">Login</button>
+        </form>
     </div>
-</div>
+
 
 </body>
 </html>
-
-
-
