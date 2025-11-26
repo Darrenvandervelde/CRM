@@ -5,30 +5,30 @@
 
 * View full contact details in a right-hand preview panel
 
-Upload and attach files (PDFs, images, links)
+* Upload and attach files (PDFs, images, links)
 
-Log interactions or notes for each contact
+* Log interactions or notes for each contact
 
 # File & Document Support
 
-Upload PDF files and preview them directly
+* Upload PDF files and preview them directly
 
-Attach links, resumes, documents, or supporting files
+* Attach links, resumes, documents, or supporting files
 
-Clean file manager layout per contact
+* Clean file manager layout per contact
 
-🧭 Modern 3-Panel CRM Layout
+# Modern 3-Panel CRM Layout
 
-Left Navigation Bar
-Quick access to sections like Contacts, Students, Reports, Settings
+* Left Navigation Bar
+* Quick access to sections like Contacts, Students, Reports, Settings
 
-Center Contact List
-Filter, sort, and search contacts
+* Center Contact List
+* Filter, sort, and search contacts
 
-Right Preview Panel
-Shows details, logs, files, and actions for the selected contact
+* Right Preview Panel
+* Shows details, logs, files, and actions for the selected contact
 
-🎨 UI & Design
+# UI & Design
 
 Clean white & blue modern theme
 
