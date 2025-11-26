@@ -9,7 +9,7 @@ Upload and attach files (PDFs, images, links)
 
 Log interactions or notes for each contact
 
-📁 File & Document Support
+#📁 File & Document Support
 
 Upload PDF files and preview them directly
 
