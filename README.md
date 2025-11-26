@@ -30,55 +30,55 @@
 
 # UI & Design
 
-Clean white & blue modern theme
+* Clean white & blue modern theme
 
-Smooth animations and transitions
+* Smooth animations and transitions
 
-Responsive layout for desktop and tablets
+* Responsive layout for desktop and tablets
 
-Drag/slide panels for a flexible workspace
+* Drag/slide panels for a flexible workspace
 
-🔐 Authentication
+# Authentication
 
-Secure login system
+* Secure login system
 
-Session-based protection
+* Session-based protection
 
-Error handling for failed logins
+* Error handling for failed logins
 
-⚙️ Persistent Storage
+# Persistent Storage
 
-Stores contact data, uploaded files, and logs
+* Stores contact data, uploaded files, and logs
 
-Can be connected to MySQL or JSON storage****
+* Can be connected to MySQL or JSON storage****
 
-⚡ How It Works
+# How It Works
 
-Login
-Users enter the system through a secure login interface.
+- Login
+* Users enter the system through a secure login interface.
 
-Dashboard
-The CRM loads with a modern 3-panel layout.
+- Dashboard
+* The CRM loads with a modern 3-panel layout.
 
-Contact Management
-Add contacts, update information, attach files, track logs.
+- Contact Management
+* Add contacts, update information, attach files, track logs.
 
-File Handling
-Files are uploaded to a dedicated folder and linked to each contact.
+- File Handling
+* Files are uploaded to a dedicated folder and linked to each contact.
 
-Preview Pane
-Selecting a contact shows full details on the right.
+- Preview Pane
+* Selecting a contact shows full details on the right.
 
-📌 Roadmap
+# Roadmap
 
-🔍 Global search
+# Global search
 
-📊 Reporting dashboard
+# Reporting dashboard
 
-🗂 Contact categories & tags
+# Contact categories & tags
 
-🔔 Notifications & reminders
+# Notifications & reminders
 
-👥 User roles / permissions
+# User roles / permissions
 
-☁ Cloud support for file storage
+# Cloud support for file storage
