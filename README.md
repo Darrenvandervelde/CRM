@@ -53,32 +53,25 @@
 * Can be connected to MySQL or JSON storage****
 
 # How It Works
-
 - Login
 * Users enter the system through a secure login interface.
-
 - Dashboard
 * The CRM loads with a modern 3-panel layout.
-
 - Contact Management
 * Add contacts, update information, attach files, track logs.
-
 - File Handling
 * Files are uploaded to a dedicated folder and linked to each contact.
-
 - Preview Pane
 * Selecting a contact shows full details on the right.
+* Roadmap
+* Global search
+* Reporting dashboard
+* Contact categories & tags
+* Notifications & reminders
+*  User roles / permissions
+* Cloud support for file storage
+# Future Update's To the CRM
+* Finish the update's to the login page with CSS complete.
+* Connect the logins to the database.
+* updating the secuity for the logins with ecrystion and add the forget password page.
 
-# Roadmap
-
-# Global search
-
-# Reporting dashboard
-
-# Contact categories & tags
-
-# Notifications & reminders
-
-# User roles / permissions
-
-# Cloud support for file storage
